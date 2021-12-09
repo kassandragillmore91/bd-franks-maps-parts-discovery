@@ -9,7 +9,7 @@ public class PartCatalog {
     private PartManufacturer manufacturer;
     private int year;
     private int month;
-    private List<String> catalogWordList;
+    private List<String> catalogWordList;   // initialized by the constructor
 
     /**
      * Instantiates a PartCatalog object. Parses a catalog file and populates the catalogWordList.

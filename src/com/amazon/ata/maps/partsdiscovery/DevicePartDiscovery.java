@@ -1,8 +1,7 @@
 package com.amazon.ata.maps.partsdiscovery;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import javax.security.auth.login.AccountNotFoundException;
+import java.util.*;
 
 /**
  * Helps expose key words from new editions of part catalogs.
@@ -17,7 +16,20 @@ public class DevicePartDiscovery {
      */
     public Map<String, Integer> calculateWordCounts(PartCatalog catalog) {
         // PARTICIPANTS: Implement calculateWordCounts()
-        return Collections.emptyMap();
+        // instantiate the object to be returned (returnMap)
+        Map<String, Integer> returnedMap = new HashMap<>();
+        // go through all the words in the PartCatalog catalogWordList
+        for (String aWord : catalog.getCatalogWords()) {
+            //      check to see if the word is already in the returnedMap
+            if (returnedMap.containsKey(aWord)) {               // if it is in the returnedMap
+                int currentCount = returnedMap.get(aWord) + 1;  // get the current count for the word from the returnMap and increment count
+                returnedMap.put(aWord, currentCount);           // put the current count for the word back in the returned
+            } else {                                            // if it's not in the returnedMap
+                returnedMap.put(aWord, 1);                      // add current word to returnedMap with count of 1
+            }
+        }
+        // return the object expected
+        return returnedMap;
     }
 
     // --- Part B ---
@@ -28,7 +40,7 @@ public class DevicePartDiscovery {
      */
     public void removeWord(String word, Map<String, Integer> wordCounts) {
         // PARTICIPANTS: Implement removeWord()
-        return;
+        wordCounts.remove(word);
     }
 
     // --- Part C ---
@@ -39,7 +51,29 @@ public class DevicePartDiscovery {
      */
     public String getMostFrequentWord(Map<String, Integer> wordCounts) {
         // PARTICIPANTS: Implement getMostFrequentWord()
-        return null;
+        // Word count is the VALUE in an entry in the Map
+        // TreeMap will keep the entries in KEY sequence - there is no map version that keeps value sequence
+
+        // instantiate String to be returned
+        String mostFrequentWord = "";
+
+        // hold highest count as we iterate through the map
+        int highestCountSoFar = 0;
+
+        // iterate through the map, remembering the key with the highest word count
+        // Map.Entry: represents an entry in a Map, .entrySet() returns all the entries in a Map
+        // foreach loop says to look through entire Map, one entry at a time
+        for (Map.Entry<String, Integer> anEntry : wordCounts.entrySet()) {
+            // if the value in anEntry is > highestCountSoFar
+            // make mostFrequentWord = anEntry.getKey and the highestCountSoFar = anEntry.getValue
+            if(anEntry.getValue() > highestCountSoFar) {
+                highestCountSoFar = anEntry.getValue();
+                mostFrequentWord = anEntry.getKey();
+            }
+        }
+
+        // return word with highest count
+        return mostFrequentWord;
     }
 
     // --- Part D ---
@@ -53,7 +87,20 @@ public class DevicePartDiscovery {
      */
     public Map<String, Double> getTfIdfScores(Map<String, Integer> wordCounts, Map<String, Double> idfScores) {
         // PARTICIPANTS: Implement getTfIdfScores()
-        return Collections.emptyMap();
+        // instantiate expected return map tfIdScores
+        Map<String, Double> tfIdScores = new HashMap<>();
+
+        // iterate through wordCounts
+        for (Map.Entry<String, Integer> wcEntry : wordCounts.entrySet()) {
+            // iterate through idfScores
+            for (Map.Entry<String, Double> idfScoreEntry : idfScores.entrySet()) {
+                // multiply wordCount by IDF score
+                // put calculated TF-IDF scores in new map, associated with correct word
+                tfIdScores.put(wcEntry.getKey(), wcEntry.getValue() * idfScoreEntry.getValue());
+            }
+        }
+        // return tfIdScores - expected return object
+        return tfIdScores;
     }
 
     // --- Extension 1 ---

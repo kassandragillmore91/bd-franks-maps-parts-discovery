@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Class responsible for reading and parsing a catalog into individual words.
+ *  Read the catalog entries from a file and return a list of all words in the file
  */
 public class PartCatalogReader {
     private static final String BASE_CATALOG_PATH = "src/main/resources/partcatalogs";
